@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details of Functions</title>
+</head>
+
+<style>
+    .catgsContainer {
+        width: 96vw;
+        height: 6vh;
+        background-color: rgba(0, 0, 255, 0.349);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        gap: 22px;
+        color: white;
+        padding: 12px;
+    }
+
+    .card {
+        display: flex;
+        justify-content: space-evenly;
+        background-color: rgba(255, 228, 196, 0.477);
+        color: rgba(0, 0, 0, 0.735);
+        align-items: center;
+    }
+</style>
+
+<body>
+
+    <div class="catgsContainer">
+        <!-- <p>smart phone</p>
+        <p>smart phone</p>
+        <p>smart phone</p>
+        <p>smart phone</p> -->
+    </div>
+
+    <hr>
+
+    <div class="cardContainer">
+        <!-- <div class="card">
+
+            <div class="img">
+                <img width="200px"
+                    src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ8aMe7q9zmB5E_hCNlb2T0v7gANVVPmcN4njgV7RGb8AWm0UgLLXdVYkfEeePFQJ0CH1y7fROc_hz3-sFpC-mjP30rZcKSvkxMLkp-DDOvVdDSMbC5ZYKCwv4"
+                    alt="">
+            </div>
+
+            <div class="name">
+                <p>Smart Phone</p>
+            </div>
+
+            <div class="price">
+                <p>price</p>
+            </div>
+
+        </div>
+        <hr> -->
+    </div>
+
+    <script>
+        let cardContainer = document.querySelector('.cardContainer')
+        let catgsContainer = document.querySelector('.catgsContainer')
+
+        async function fetchData() {
+            let data = await fetch('https://dummyjson.com/products')
+            let res = await data.json()
+            return res.products
+        }
+
+        window.onload = async () => {
+            let products = await fetchData()
+            displayProducts(products)
+            catgs(products)
+        }
+
+        async function displayProducts(products) {
+            let product = products.map((item) => {
+                cardContainer.innerHTML += `<div class="card">
+
+            <div class="img">
+                <img width="200px"
+                    src="${item.thumbnail}"
+                    alt="">
+            </div>
+
+            <div class="name">
+                <p>${item.title}</p>
+            </div>
+
+            <div class="price">
+                <p>$ ${item.price}/-</p>
+            </div>
+
+        </div>
+        <hr>`
+            })
+        }
+
+        async function catgs(products) {
+            let productCatg = products.map((item) => {
+                return item.category
+            })
+
+            let catg = productCatg.map((item) => {
+                return item
+            })
+
+            let uniqCatg = catg.filter((item, index) => {
+                return (catg.indexOf(item) === index)
+            })
+
+            let capitalCatg = uniqCatg.map((item) => {
+                return (item.charAt(0).toUpperCase() + item.slice(1))
+            })
+
+            let displayCatg = capitalCatg.map((item) => {
+                catgsContainer.innerHTML += `<p>${item}</p>`
+            })
+        }
+
+    </script>
+</body>
+
+</html>
